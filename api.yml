@@ -1,0 +1,259 @@
+openapi: 3.0.0
+info:
+  title: Serviço gerenciamento de papéis, comparativos e experimentos
+  description: Gerencia papéis, comparativos e experimentos
+  version: 0.1.9
+servers:
+  - url: http://api.teste.com/v1 # SUGESTÃO NOME DA APLICAÇÃO
+    description: Serviço de gerenciamento de papéis, comparativos e experimentos
+paths:
+  /comparativos:
+    post:
+      summary: Insere um comparativo na plataforma
+      description: Inserção de um novo comparativo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              type: object
+              properties:
+                nome_fazenda: 
+                  description: nome da fazenda
+                  type: string
+                  minLength: 1
+                  maxLength: 100
+                data:
+                  description: data no formato aaaa-mm-dd
+                  type: string
+                  pattern: ^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$
+                  minLength: 10
+                  maxLength: 10
+                ponta_pulverizacao:
+                  description: ponta pulverizacao
+                  type: string
+                  minLength: 1
+                  maxLength: 100
+                equipamento:
+                  description: nome do equipamento
+                  type: string
+                  minLength: 1
+                  maxLength: 100
+              required:
+                - nome_fazenda
+                - data
+                - ponta_pulverizacao
+                - equipamento
+      responses:
+        '200':    # status code
+          description: sucesso
+          content:
+            application/json:
+              schema: 
+                type: string
+        '400':
+          description: a requisição enviada possui algum item de tipagem diferente ou faltante
+        '500':
+          description: erro no servidor
+  /experimentos_fazenda:          
+    post:
+      summary: realiza o cadastro de 3 entidades - produto, experimento e produtos utilizados na fazenda
+      description: insere entidades de produto, experimento e produto utilizado em se tratando de fazenda
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              type: object
+              properties:
+                padrao:
+                  description: nome do padrão, se é fazenda ou empresa
+                  type: integer
+                  enum: [1]
+                tx_aplicacao: 
+                  description: valor da taxa aplicação
+                  type: number
+                  format: float
+                pressao:
+                  description: valor da pressão
+                  type: number
+                  format: float
+                velocidade:
+                  description: valor da velocidade
+                  type: number
+                  format: float
+                temperatura:
+                  description: valor da temperatura
+                  type: number
+                  format: float
+                umidade:
+                  description: valor da umidade
+                  type: number
+                  format: float
+                vento:
+                  description: valor do vento
+                  type: number
+                  format: float
+                nome_produto:
+                  description: nome do produto
+                  type: array
+                  items:
+                    type: string
+                    minLength: 1
+                    maxLength: 100
+                dosagem:  
+                  description: valor do vento
+                  type: array
+                  items:
+                    type: number
+                    format: float
+              required:
+                - padrao
+                - tx_aplicacao
+                - pressao
+                - velocidade
+                - temperatura
+                - umidade
+                - vento
+      responses:
+        '200':    # status code
+          description: sucesso
+          content:
+            application/json:
+              schema: 
+                type: string
+        '400':
+          description: a requisição enviada possui algum item de tipagem diferente ou faltante
+        '500':
+          description: erro no servidor
+  /experimentos_empresa:
+    post:
+      summary: realiza o cadastro de 3 entidades - produto, experimento e produtos utilizados na empresa
+      description: insere entidades de produto, experimento e produto utilizado em se tratando de empresa
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              type: object
+              properties:
+                padrao:
+                  description: nome do padrão, se é fazenda ou empresa
+                  type: integer
+                  enum: [2]
+                tx_aplicacao: 
+                  description: valor da taxa aplicação
+                  type: number
+                  format: float
+                pressao:
+                  description: valor da pressão
+                  type: number
+                  format: float
+                velocidade:
+                  description: valor da velocidade
+                  type: number
+                  format: float
+                temperatura:
+                  description: valor da temperatura
+                  type: number
+                  format: float
+                umidade:
+                  description: valor da umidade
+                  type: number
+                  format: float
+                vento:
+                  description: valor do vento
+                  type: number
+                  format: float
+                nome_produto:
+                  description: nome do produto
+                  type: array
+                  items:
+                    type: string
+                    minLength: 1
+                    maxLength: 100
+                dosagem:  
+                  description: valor do vento
+                  type: array
+                  items:
+                    type: number
+                    format: float
+              required:
+                - padrao
+                - tx_aplicacao
+                - pressao
+                - velocidade
+                - temperatura
+                - umidade
+                - vento
+      responses:
+        '200':    # status code
+          description: sucesso
+          content:
+            application/json:
+              schema: 
+                type: string
+        '400':
+          description: a requisição enviada possui algum item de tipagem diferente ou faltante
+        '500':
+          description: erro no servidor
+  /papeis: 
+    post:
+      summary: realiza o insert de uma lista de papéis
+      description: cria papéis
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              type: object
+              properties:
+                dv1: 
+                  description: DV1
+                  type: integer
+                  format: int32
+                dv5: 
+                  description: DV5
+                  type: integer
+                  format: int32
+                dv9: 
+                  description: DV9
+                  type: integer
+                  format: int32
+                porcent_coverage:
+                  description: percentagem de cobertura
+                  type: number #float
+                image_area:  
+                  description: área da imagem
+                  type: number #float
+                deposit_cm:
+                  description: tamanho do depósito
+                  type: number #float
+                deposition:
+                  description: deposition
+                  type: number #float
+                posicao:
+                  description: posição da folha da planta, pode ser superior, média ou inferior
+                  type: integer
+                  enum: [1, 2, 3]
+              required:
+                - dv1
+                - dv5
+                - dv9
+                - porcent_coverage
+                - image_area
+                - deposit_cm
+                - deposition
+                - posicao
+      responses:
+        '200':    # status code
+          description: sucesso
+          content:
+            application/json:
+              schema: 
+                type: string
+        '400':
+          description: a requisição enviada possui algum item de tipagem diferente ou faltante
+        '500':
+          description: erro no servidor
+    
